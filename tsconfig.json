@@ -1,0 +1,9 @@
+mkdir src\lib
+
+
+cd C:\Users\Admin\Desktop\pomnimpro
+
+alter table public.burials 
+add column photo_main_url text,
+add column photo_general_url text;
+git init
