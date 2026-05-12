@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xxd c:/Users/Admin/Desktop/pomnimpro/next.config.ts)",
+      "Bash(node -e \"const {loadBindings} = require\\('./node_modules/next/dist/build/swc'\\); loadBindings\\(\\).then\\(b => console.log\\('SWC loaded:', typeof b.transform\\)\\).catch\\(e => console.error\\('SWC failed:', e.message\\)\\)\")",
+      "Bash(node -e ' *)",
+      "Bash(npm run *)",
+      "Bash(node -e \"process.kill\\(31008, 'SIGKILL'\\); console.log\\('killed'\\)\")"
+    ]
+  }
+}

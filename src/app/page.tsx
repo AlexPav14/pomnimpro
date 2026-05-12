@@ -1,9 +1,7 @@
 import { Search, Plus, MapPin, Users, Heart, ArrowRight, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import dynamic from "next/dynamic";
-
-const YandexMap = dynamic(() => import("@/components/YandexMap"), { ssr: false });
+import MapWrapper from "@/components/MapWrapper";
 
 export default async function Home() {
   const { data: burials } = await supabase
@@ -125,7 +123,7 @@ export default async function Home() {
         </div>
 
         <div className="w-full rounded-2xl overflow-hidden" style={{ height: "460px", border: "1px solid var(--border)" }}>
-          <YandexMap burials={mapBurials} />
+          <MapWrapper burials={mapBurials} />
         </div>
       </section>
 
