@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Heart, MapPin, Calendar, Lock, Share2, ChevronRight } from "lucide-react";
+import { Heart, MapPin, Calendar, Lock, Share2, ChevronRight, Coins } from "lucide-react";
 import { getTheme } from "@/lib/religionThemes";
 
 interface Props {
@@ -18,6 +18,15 @@ export default async function BurialPage({ params }: Props) {
     .single();
 
   if (error || !burial) notFound();
+
+  const { data: fundraiser } = await supabase
+    .from("fundraisers")
+    .select("*")
+    .eq("burial_id", id)
+    .in("status", ["active", "completed"])
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
 
   const t = getTheme(burial.religion);
   const birthYear = burial.birth_date ? new Date(burial.birth_date).getFullYear() : null;
@@ -206,6 +215,82 @@ export default async function BurialPage({ params }: Props) {
             Войти
           </Link>
         </div>
+
+        {/* Сбор средств */}
+        {fundraiser ? (
+          <div className="rounded-2xl p-6 border mb-8" style={{ background: t.surface2, borderColor: t.border }}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Coins size={16} style={{ color: t.accent }} />
+                <span className="text-xs font-mono" style={{ color: t.muted }}>Сбор средств</span>
+              </div>
+              <span
+                className="text-xs px-2 py-0.5 rounded-full font-medium"
+                style={{
+                  background: fundraiser.status === "active" ? t.accent : t.surface,
+                  color: fundraiser.status === "active" ? "#fff" : t.muted,
+                }}
+              >
+                {fundraiser.status === "active" ? "Активен" : "Завершён"}
+              </span>
+            </div>
+
+            <h3 className="font-semibold mb-1" style={{ color: t.accentText }}>{fundraiser.title}</h3>
+            {fundraiser.description && (
+              <p className="text-sm mb-4" style={{ color: t.muted }}>{fundraiser.description}</p>
+            )}
+
+            {/* Прогресс */}
+            <div className="mb-4">
+              <div className="flex justify-between text-xs mb-2" style={{ color: t.muted }}>
+                <span>Собрано: <strong style={{ color: t.accentText }}>{fundraiser.collected_amount.toLocaleString("ru-RU")} ₽</strong></span>
+                <span>Цель: {fundraiser.goal_amount.toLocaleString("ru-RU")} ₽</span>
+              </div>
+              <div className="w-full rounded-full h-2.5" style={{ background: t.surface }}>
+                <div
+                  className="h-2.5 rounded-full transition-all"
+                  style={{
+                    width: `${Math.min(100, Math.round((fundraiser.collected_amount / fundraiser.goal_amount) * 100))}%`,
+                    background: t.accent,
+                  }}
+                />
+              </div>
+              <div className="text-xs mt-1.5 text-right font-medium" style={{ color: t.accent }}>
+                {Math.min(100, Math.round((fundraiser.collected_amount / fundraiser.goal_amount) * 100))}%
+              </div>
+            </div>
+
+            {fundraiser.status === "active" && (
+              <Link
+                href={`/burial/${id}/donate`}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-opacity hover:opacity-90"
+                style={{ background: t.accent, color: "#fff" }}
+              >
+                <Coins size={15} />
+                Пожертвовать
+              </Link>
+            )}
+          </div>
+        ) : (
+          <div className="rounded-2xl p-6 border mb-8 flex items-center justify-between" style={{ background: t.surface2, borderColor: t.border }}>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: t.surface }}>
+                <Coins size={18} style={{ color: t.accent }} />
+              </div>
+              <div>
+                <p className="text-sm font-medium" style={{ color: t.accentText }}>Сбор средств</p>
+                <p className="text-xs" style={{ color: t.muted }}>На памятник, уход или другие нужды</p>
+              </div>
+            </div>
+            <Link
+              href={`/burial/${id}/fundraiser/new`}
+              className="text-sm px-4 py-2 rounded-full border font-medium transition-opacity hover:opacity-80"
+              style={{ borderColor: t.border, color: t.accent }}
+            >
+              Открыть сбор
+            </Link>
+          </div>
+        )}
 
         {/* Логотип агентства или платформы */}
         <div
