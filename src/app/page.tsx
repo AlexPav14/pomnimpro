@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <>
+    <div className={styles.pageWrapper}>
       <main className={styles.stage}>
         <div className={styles.scene}>
           <div className={styles.photoBg} />
@@ -28,7 +28,8 @@ export default function Home() {
           <section className={styles.center}>
             <div className={styles.actions}>
               <Link href="/create" className={`${styles.btn} ${styles.solid}`}>Внести запись</Link>
-              <Link href="/search" className={`${styles.btn} ${styles.glass}`}>Найти запись</Link>
+              <div className={styles.basketSpacer} />
+              <Link href="/search" className={`${styles.btn} ${styles.solid}`}>Найти запись</Link>
             </div>
           </section>
         </div>
@@ -56,6 +57,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }

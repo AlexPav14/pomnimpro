@@ -1,14 +1,20 @@
+.pageWrapper {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 .stage {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
   isolation: isolate;
   background: #1f2622;
   font-family: var(--font-manrope), "Manrope", system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
-  display: flex;
-  flex-direction: column;
 }
 
 .scene {
@@ -253,13 +259,12 @@
 /* ── center CTAs ── */
 .center {
   position: absolute;
-  inset: 0;
-  display: grid;
-  justify-items: center;
-  align-content: center;
-  padding-top: 45vh;
-  gap: clamp(14px, 2.4vh, 28px);
-  text-align: center;
+  top: 62.7vh;
+  left: 45.9%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   pointer-events: none;
   z-index: 2;
 }
@@ -270,15 +275,26 @@
 
 .actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 0;
+  align-items: center;
+}
+
+.basketSpacer {
+  width: calc(91px + 15vw);
+  flex-shrink: 0;
 }
 
 .actions .btn {
   padding: 16px 44px;
   justify-content: center;
-  min-width: 240px;
+  min-width: 220px;
+}
+
+@media (max-width: 920px) {
+  .center { left: 50%; top: 65vh; }
+  .basketSpacer { width: 70px; }
+  .actions .btn { min-width: 130px; padding: 14px 20px; font-size: 13px; }
 }
 
 /* ── footer ── */
