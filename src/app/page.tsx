@@ -18,9 +18,9 @@ export default function Home() {
                 <span className={styles.sub}>ИНТЕРАКТИВНАЯ ПОИСКОВАЯ СИСТЕМА ЗАХОРОНЕНИЙ</span>
               </Link>
               <Link href="/about" className={styles.pill}>О проекте</Link>
-              <Link href="/search" className={styles.pill}>Книга записей</Link>
             </div>
             <div className={styles.topbarRight}>
+              <Link href="/search" className={styles.pill}>Книга записей</Link>
               <Link href="/about#how" className={styles.pill}>Как это устроено</Link>
               <Link href="/search" className={styles.pill}>Поиск</Link>
               <Link href="/login" className={styles.pill}>Войти</Link>
